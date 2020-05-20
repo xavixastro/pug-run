@@ -1,94 +1,77 @@
 const CONSTANTS = {
-    FOOD_SPEED: 2,
-    GAP_HEIGHT: 150,
-    PIPE_WIDTH: 50,
+    ITEM_SPEED: 2,
     EDGE_BUFFER: 50,
-    PIPE_SPACING: 220,
+    ITEM_SPACING: 220,
     WARM_UP_SECONDS: 1
 };
+
 
 
 export default class Level {
     constructor(dimensions) {
         this.dimensions = dimensions;
 
-        const firstPipeDistance =
+        const firstItemDistance =
             this.dimensions.width +
-            (CONSTANTS.WARM_UP_SECONDS * 60 * CONSTANTS.FOOD_SPEED);
+            (CONSTANTS.WARM_UP_SECONDS * 120 * CONSTANTS.ITEM_SPEED);
 
-        this.pipes = [
-            this.randomPipe(firstPipeDistance),
-            this.randomPipe(firstPipeDistance + CONSTANTS.PIPE_SPACING),
-            this.randomPipe(firstPipeDistance + (CONSTANTS.PIPE_SPACING * 2)),
+        this.items = [
+            this.randomItem(firstItemDistance),
+            this.randomItem(firstItemDistance + CONSTANTS.ITEM_SPACING),
+            this.randomItem(firstItemDistance + (CONSTANTS.ITEM_SPACING * 2)),
         ];
     }
 
-    randomPipe(x) {
-        const heightRange = this.dimensions.height - (2 * CONSTANTS.EDGE_BUFFER) - CONSTANTS.GAP_HEIGHT;
-        const gapTop = (Math.random() * heightRange) + CONSTANTS.EDGE_BUFFER;
-        const pipe = {
-            topPipe: {
+    randomItem(x) {
+        const heightRange = this.dimensions.height - (2 * CONSTANTS.EDGE_BUFFER);
+        const randHeight = (Math.random() * heightRange) + CONSTANTS.EDGE_BUFFER;
+        const item = {
                 left: x,
-                right: CONSTANTS.PIPE_WIDTH + x,
-                top: 0,
-                bottom: gapTop
-            },
-            bottomPipe: {
-                left: x,
-                right: CONSTANTS.PIPE_WIDTH + x,
-                top: gapTop + CONSTANTS.GAP_HEIGHT,
-                bottom: this.dimensions.height
-            },
-            passed: false
+                right: 50 + x,
+                top: randHeight-50,
+                bottom: randHeight,
+                eaten: false 
         };
-        return pipe
+        return item
     }
 
-    movePipes() {
-        this.eachPipe(function (pipe) {
-            pipe.topPipe.left -= CONSTANTS.FOOD_SPEED;
-            pipe.topPipe.right -= CONSTANTS.FOOD_SPEED;
-            pipe.bottomPipe.left -= CONSTANTS.FOOD_SPEED;
-            pipe.bottomPipe.right -= CONSTANTS.FOOD_SPEED;
+    moveItems() {
+        this.eachItem(function (item) {
+            item.left -= CONSTANTS.ITEM_SPEED;
+            item.right -= CONSTANTS.ITEM_SPEED;
         });
 
-        //if a pipe has left the screen add a new one to the end
-        if (this.pipes[0].topPipe.right <= 0) {
-            this.pipes.shift();
-            const newX = this.pipes[1].topPipe.left + CONSTANTS.PIPE_SPACING;
-            this.pipes.push(this.randomPipe(newX));
+        //if a item has left the screen add a new one to the end
+        if (this.items[0].right <= 0) {
+            this.items.shift();
+            const newX = this.items[1].left + CONSTANTS.ITEM_SPACING;
+            this.items.push(this.randomItem(newX));
         }
     }
 
-    drawPipes(ctx) {
-        this.eachPipe(function (pipe) {
+    drawItems(ctx) {
+        this.eachItem(function (item) {
             ctx.fillStyle = "green";
 
-            //draw top pipe
+            //draw top item
             ctx.fillRect(
-                pipe.topPipe.left,
-                pipe.topPipe.top,
-                CONSTANTS.PIPE_WIDTH,
-                pipe.topPipe.bottom - pipe.topPipe.top
+                item.left,
+                item.top,
+                item.right - item.left,
+                item.bottom - item.top
             );
-            //draw bottom pipe
-            ctx.fillRect(
-                pipe.bottomPipe.left,
-                pipe.bottomPipe.top,
-                CONSTANTS.PIPE_WIDTH,
-                pipe.bottomPipe.bottom - pipe.bottomPipe.top
-            );
+
         });
     }
 
-    eachPipe(callback) {
-        this.pipes.forEach(callback.bind(this));
+    eachItem(callback) {
+        this.items.forEach(callback.bind(this));
     }
 
     animate(ctx) {
         this.drawBackground(ctx);
-        this.movePipes();
-        this.drawPipes(ctx);
+        this.moveItems();
+        this.drawItems(ctx);
     }
 
     drawBackground(ctx) {
@@ -110,21 +93,20 @@ export default class Level {
             return true;
         };
         let collision = false;
-        this.eachPipe((pipe) => {
+        this.eachItem((item) => {
             if (
-                //check if the pug is overlapping (colliding) with either pipe
-                _overlap(pipe.topPipe, pug) ||
-                _overlap(pipe.bottomPipe, pug)
+                //check if the pug is overlapping (colliding) with either item
+                _overlap(item, pug) 
             ) { collision = true; }
         });
         return collision;
     }
 
-    passedPipe(pug, callback) {
-        this.eachPipe((pipe) => {
-            if (pipe.topPipe.right < pug.left) {
-                if (!pipe.passed) {
-                    pipe.passed = true;
+    passedItem(pug, callback) {
+        this.eachItem((item) => {
+            if (item.right < pug.left) {
+                if (!item.eaten) {
+                    item.eaten = true;
                     callback();
                 }
             }

@@ -2,8 +2,8 @@ const CONSTANTS = {
     GRAVITY: 0.4,
     FLAP_SPEED: 8,
     TERMINAL_VEL: 12,
-    BIRD_WIDTH: 40,
-    BIRD_HEIGHT: 30
+    PUG_WIDTH: 40,
+    PUG_HEIGHT: 30
 };
 
 export default class Pug {
@@ -60,15 +60,15 @@ export default class Pug {
     bounds() {
         return {
             left: this.x,
-            right: this.x + CONSTANTS.BIRD_WIDTH,
+            right: this.x + CONSTANTS.PUG_WIDTH,
             top: this.y,
-            bottom: this.y + CONSTANTS.BIRD_HEIGHT
+            bottom: this.y + CONSTANTS.PUG_HEIGHT
         };
     }
 
     outOfBounds() {
         const aboveTheTop = this.y < 0;
-        const belowTheBottom = this.y + CONSTANTS.BIRD_HEIGHT > this.dimensions.height;
+        const belowTheBottom = this.y + CONSTANTS.PUG_HEIGHT > this.dimensions.height;
         return aboveTheTop || belowTheBottom;
     }
 

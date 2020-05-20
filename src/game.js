@@ -31,7 +31,7 @@ export default class Game {
         }
 
         //we see if they have scored a point by passing a pipe
-        this.level.passedPipe(this.pug.bounds(), () => {
+        this.level.passedItem(this.pug.bounds(), () => {
             this.score += 1;
             console.log(this.score);
         });
