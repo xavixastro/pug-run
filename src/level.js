@@ -1,7 +1,7 @@
 const CONSTANTS = {
     ITEM_SPEED: 2,
     EDGE_BUFFER: 50,
-    ITEM_SPACING: 220,
+    ITEM_SPACING: 150,
     WARM_UP_SECONDS: 1
 };
 
@@ -17,8 +17,15 @@ export default class Level {
 
         this.items = [
             this.randomItem(firstItemDistance),
-            this.randomItem(firstItemDistance + CONSTANTS.ITEM_SPACING),
+            this.randomItem(firstItemDistance + (CONSTANTS.ITEM_SPACING * 0.5)),
+            this.randomItem(firstItemDistance + (CONSTANTS.ITEM_SPACING * 1)),
+            this.randomItem(firstItemDistance + (CONSTANTS.ITEM_SPACING * 1.5)),
             this.randomItem(firstItemDistance + (CONSTANTS.ITEM_SPACING * 2)),
+            this.randomItem(firstItemDistance + (CONSTANTS.ITEM_SPACING * 2.5)),
+            this.randomItem(firstItemDistance + (CONSTANTS.ITEM_SPACING * 3)),
+            this.randomItem(firstItemDistance + (CONSTANTS.ITEM_SPACING * 3.5)),
+            this.randomItem(firstItemDistance + (CONSTANTS.ITEM_SPACING * 4)),
+            this.randomItem(firstItemDistance + (CONSTANTS.ITEM_SPACING * 4.5)),
         ];
     }
 
@@ -27,8 +34,8 @@ export default class Level {
         const randHeight = (Math.random() * heightRange) + CONSTANTS.EDGE_BUFFER;
         const item = {
                 left: x,
-                right: 50 + x,
-                top: randHeight-50,
+                right: x + 50,
+                top: randHeight - 50,
                 bottom: randHeight,
                 eaten: false 
         };
@@ -41,12 +48,15 @@ export default class Level {
             item.right -= CONSTANTS.ITEM_SPEED;
         });
 
-        //if a item has left the screen add a new one to the end
         if (this.items[0].right <= 0) {
             this.items.shift();
-            const newX = this.items[1].left + CONSTANTS.ITEM_SPACING;
+        }          
+
+        if (this.items.length !== 10){
+            const newX = this.dimensions.width;
             this.items.push(this.randomItem(newX));
         }
+
     }
 
     drawItems(ctx) {

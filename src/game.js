@@ -51,20 +51,28 @@ export default class Game {
 
 
     registerEvents() {
-        this.boundClickHandler = this.click.bind(this);
-        this.ctx.canvas.addEventListener("mousedown", this.boundClickHandler);
+        addEventListener('keydown', function (e) {
+            if (e.keyCode === 38) {
+                if (this.pug.y <= 0) return
+                this.pug.moveUp();
+            }
+            if (e.keyCode === 40) {
+                if (this.pug.y >= this.dimensions.height - 30) return
+                this.pug.moveDown();
+            }
+            if (e.keyCode === 32) {
+                if (!this.running) {
+                    this.play();
+                }
+            }
+
+        }.bind(this))
     }
 
-    click(e) {
-        if (!this.running) {
-            this.play();
-        }
-        this.pug.flap();
-    }
 
     gameOver() {
         return (
-            this.level.collidesWith(this.pug.bounds()) || this.pug.outOfBounds(this.height)
+            this.level.collidesWith(this.pug.bounds()) 
         );
     }
 
