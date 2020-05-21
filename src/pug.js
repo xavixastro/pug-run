@@ -31,7 +31,7 @@ export default class Pug {
         if (this.up === false && this.down === false) {
 
             
-            imagen.src = '../src/assets/sprite-straight.png';
+            imagen.src = './src/assets/sprite-straight.png';
 
             if (this.idx <= 7) {
                 ctx.drawImage(imagen, 77, 75, 142, 88, this.x, this.y, 142, 88);
@@ -50,7 +50,7 @@ export default class Pug {
 
             this.y -= 3;
 
-            imagen.src = '../src/assets/sprite-up.png';
+            imagen.src = './src/assets/sprite-up.png';
 
             if (this.idx <= 7) {
                 ctx.drawImage(imagen, 77, 75, 142, 88, this.x, this.y, 142, 88);
@@ -69,7 +69,7 @@ export default class Pug {
 
             this.y += 3;
 
-            imagen.src = '../src/assets/sprite-down.png';
+            imagen.src = './src/assets/sprite-down.png';
 
             if (this.idx <= 7) {
                 ctx.drawImage(imagen, 77, 75, 142, 88, this.x, this.y, 142, 88);

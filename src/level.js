@@ -1,5 +1,5 @@
 const CONSTANTS = {
-    ITEM_SPEED: 2,
+    ITEM_SPEED: 3,
     EDGE_BUFFER: 50,
     ITEM_SPACING: 150,
     WARM_UP_SECONDS: 1
