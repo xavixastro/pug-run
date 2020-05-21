@@ -85,7 +85,7 @@ export default class Level {
     }
 
     drawBackground(ctx) {
-        ctx.fillStyle = "peru";
+        ctx.fillStyle = "#3D231A";
         ctx.fillRect(0, 0, this.dimensions.width, this.dimensions.height);
     }
 

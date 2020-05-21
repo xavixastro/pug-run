@@ -67,6 +67,11 @@ export default class Game {
             }
 
         }.bind(this))
+        addEventListener('keyup', function (e) {
+            if (e.keyCode === 38 || e.keyCode === 40) {
+                this.pug.moveStraight();
+            }
+        }.bind(this))
     }
 
 
@@ -86,13 +91,6 @@ export default class Game {
         this.ctx.lineWidth = 2;
         this.ctx.strokeText(this.score, loc.x, loc.y);
     }
-
-
-
-    // start(){
-    //     this.board.draw(this.ctx);
-    //     this.pug.draw(this.ctx);
-    // }
 
     // draw(){
     //     this.ctx.fillStyle = "peru";

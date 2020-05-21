@@ -2,3 +2,13 @@
     display: none;
     z-index: -2;
 }
+
+.sprite {
+    background: url("../src/assets/sprite-straight.png") no-repeat top left; width: 300px; height: 300px;
+}
+
+.s000100 { background-position: 0 0; } 
+.s000101 { background-position: 0 -310px; } 
+.s000102 { background-position: 0 -620px; } 
+.s000103 { background-position: 0 -930px; } 
+.s000104 { background-position: 0 -1240px; } 
