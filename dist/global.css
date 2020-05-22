@@ -1,6 +1,6 @@
 #background-img {
     display: none;
-    z-index: -2;
+    z-index: -10;
 }
 
 .sprite {

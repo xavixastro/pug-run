@@ -5,6 +5,9 @@ const CONSTANTS = {
     WARM_UP_SECONDS: 1
 };
 
+const GOOD_ITEMS = ['./src/assets/apple.png', './src/assets/donut.png', './src/assets/bone.png' ]
+const BAD_ITEMS = ['./src/assets/broccoli.png', './src/assets/garlic.png']
+
 
 
 export default class Level {
@@ -32,13 +35,27 @@ export default class Level {
     randomItem(x) {
         const heightRange = this.dimensions.height - (2 * CONSTANTS.EDGE_BUFFER);
         const randHeight = (Math.random() * heightRange) + CONSTANTS.EDGE_BUFFER;
-        const item = {
+        const eatable = Math.random() >= 0.5;
+        let item;
+        if (eatable) {
+            item = {
                 left: x,
                 right: x + 35,
                 top: randHeight - 35,
                 bottom: randHeight,
-                eaten: false 
-        };
+                eatable: true,
+                img: GOOD_ITEMS[Math.floor(Math.random() * GOOD_ITEMS.length)]
+            };
+        } else {
+            item = {
+                left: x,
+                right: x + 35,
+                top: randHeight - 35,
+                bottom: randHeight,
+                eatable: false,
+                img: BAD_ITEMS[Math.floor(Math.random() * BAD_ITEMS.length)]
+            };
+        }
         return item
     }
 
@@ -63,7 +80,7 @@ export default class Level {
         this.eachItem(function (item, idx) {
 
             let imagen = new Image();
-            imagen.src = './src/assets/donut.png';
+            imagen.src = item.img;
             ctx.drawImage(imagen, 0, 0, 512, 512, item.left, item.top, item.right-item.left, item.bottom-item.top);
 
             // ctx.fillStyle = "green";
@@ -84,7 +101,7 @@ export default class Level {
     }
 
     animate(ctx) {
-        this.drawBackground(ctx);
+        // this.drawBackground(ctx);
         this.moveItems();
         this.drawItems(ctx);
     }
@@ -114,13 +131,18 @@ export default class Level {
                 _overlap(item, pug) 
             ) { 
                 arr.splice(idx, 1)
-                callback();
                 // const newX = this.dimensions.width;
                 // this.items.push(this.randomItem(newX));
+                if (item.eatable) { 
+                    callback(true); 
+                }
+                else {
+                    callback(false);
+                }
                 // collision = true; 
             }
         });
-        return collision;
+        return collision; 
     }
 
     eatenItem(pug, callback) {
