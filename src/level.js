@@ -52,7 +52,7 @@ export default class Level {
             this.items.shift();
         }          
 
-        if (this.items.length !== 10){
+        if (this.items.length <= 10){
             const newX = this.dimensions.width;
             this.items.push(this.randomItem(newX));
         }
@@ -89,30 +89,36 @@ export default class Level {
         ctx.fillRect(0, 0, this.dimensions.width, this.dimensions.height);
     }
 
-    collidesWith(pug) {
-        //this function returns true if the the rectangles overlap
+    collidesWith(pug, callback) {
+
         const _overlap = (rect1, rect2) => {
-            //check that they don't overlap in the x axis
+
             if (rect1.left > rect2.right || rect1.right < rect2.left) {
                 return false;
             }
-            //check that they don't overlap in the y axis
+
             if (rect1.top > rect2.bottom || rect1.bottom < rect2.top) {
                 return false;
             }
             return true;
         };
         let collision = false;
-        this.eachItem((item) => {
+        this.eachItem((item, idx, arr) => {
             if (
                 //check if the pug is overlapping (colliding) with either item
                 _overlap(item, pug) 
-            ) { collision = true; }
+            ) { 
+                arr.splice(idx, 1)
+                callback();
+                // const newX = this.dimensions.width;
+                // this.items.push(this.randomItem(newX));
+                // collision = true; 
+            }
         });
         return collision;
     }
 
-    passedItem(pug, callback) {
+    eatenItem(pug, callback) {
         this.eachItem((item) => {
             if (item.right < pug.left) {
                 if (!item.eaten) {

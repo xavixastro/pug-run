@@ -30,11 +30,11 @@ export default class Game {
             this.restart();
         }
 
-        //we see if they have scored a point by passing a pipe
-        this.level.passedItem(this.pug.bounds(), () => {
-            this.score += 1;
-            console.log(this.score);
-        });
+        //we see if they have scored a point by eating an item
+        // this.level.eatenItem(this.pug.bounds(), () => {
+        //     this.score += 1;
+        //     console.log(this.score);
+        // });
 
         //and draw the score
         this.drawScore();
@@ -53,7 +53,7 @@ export default class Game {
     registerEvents() {
         addEventListener('keydown', function (e) {
             if (e.keyCode === 38) {
-                if (this.pug.y <= 0) return
+                // if (this.pug.y <= 0) return
                 this.pug.moveUp();
             }
             if (e.keyCode === 40) {
@@ -77,7 +77,10 @@ export default class Game {
 
     gameOver() {
         return (
-            this.level.collidesWith(this.pug.bounds()) 
+            this.level.collidesWith(this.pug.bounds(), () => {
+                this.score += 1;
+                console.log(this.score);
+            }) 
         );
     }
 
