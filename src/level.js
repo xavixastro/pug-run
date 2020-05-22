@@ -34,8 +34,8 @@ export default class Level {
         const randHeight = (Math.random() * heightRange) + CONSTANTS.EDGE_BUFFER;
         const item = {
                 left: x,
-                right: x + 50,
-                top: randHeight - 50,
+                right: x + 35,
+                top: randHeight - 35,
                 bottom: randHeight,
                 eaten: false 
         };
@@ -60,16 +60,21 @@ export default class Level {
     }
 
     drawItems(ctx) {
-        this.eachItem(function (item) {
-            ctx.fillStyle = "green";
+        this.eachItem(function (item, idx) {
 
-            //draw top item
-            ctx.fillRect(
-                item.left,
-                item.top,
-                item.right - item.left,
-                item.bottom - item.top
-            );
+            let imagen = new Image();
+            imagen.src = './src/assets/donut.png';
+            ctx.drawImage(imagen, 0, 0, 512, 512, item.left, item.top, item.right-item.left, item.bottom-item.top);
+
+            // ctx.fillStyle = "green";
+
+            // //draw top item
+            // ctx.fillRect(
+            //     item.left,
+            //     item.top,
+            //     item.right - item.left,
+            //     item.bottom - item.top
+            // );
 
         });
     }
@@ -85,7 +90,7 @@ export default class Level {
     }
 
     drawBackground(ctx) {
-        ctx.fillStyle = "#3D231A";
+        ctx.fillStyle = "green";
         ctx.fillRect(0, 0, this.dimensions.width, this.dimensions.height);
     }
 
