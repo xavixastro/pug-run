@@ -2,6 +2,20 @@ import Board from './board';
 import Pug from './pug';
 import Level from "./level";
 
+function sound(src) {
+    this.sound = document.createElement("audio");
+    this.sound.src = src;
+    this.sound.setAttribute("preload", "auto");
+    this.sound.setAttribute("controls", "none");
+    this.sound.style.display = "none";
+    document.body.appendChild(this.sound);
+    this.play = function () {
+        this.sound.play();
+    }
+    this.stop = function () {
+        this.sound.pause();
+    }
+}
 
 
 export default class Game {
@@ -20,7 +34,13 @@ export default class Game {
         this.lastFrameRepaintTime = 0;
         this.calcOffset = this.calcOffset.bind(this);
         this.draw = this.draw.bind(this);
-        this.startBackground();
+        // this.startBackground();
+
+        //instructions
+        this.img2 = document.getElementById("instructions-img");
+        this.drawInstructions = this.drawInstructions.bind(this);
+        this.drawInstructions();
+
 
     }
 
@@ -41,6 +61,7 @@ export default class Game {
         this.ctx2.translate(this.distance, 0);
         this.ctx2.drawImage(this.img, 0, 0);
         this.ctx2.drawImage(this.img, this.img.width, 0);
+        
 
         requestAnimationFrame(this.draw);
 
@@ -51,6 +72,36 @@ export default class Game {
         this.lastFrameRepaintTime = window.performance.now();
         requestAnimationFrame(this.draw);
     }
+
+    drawInstructions(){
+
+        let ground = new Image();
+        ground.src = './src/assets/ground.jpg';
+        this.ctx2.drawImage(ground, 0, 0);
+
+        let pug = new Image();
+        pug.src = './src/assets/pug.png';
+        this.ctx2.drawImage(pug, 100, 300);
+
+        this.ctx.font = "bold 100pt Permanent Marker";
+        this.ctx.fillStyle = "#EBC489";
+        this.ctx.fillText("PUG RUN", 100, 200);
+        this.ctx.strokeStyle = "#3D2F26";
+        this.ctx.lineWidth = 2;
+        this.ctx.strokeText("PUG RUN", 100, 200);
+
+        this.ctx.font = "15pt Rock Salt";
+        this.ctx.fillStyle = "white";
+
+        this.ctx.fillText("Use ⬆⬇ to move your pug", 400, 300);
+        this.ctx.fillText("Eat 🍩 🍎 🦴 to gain points", 400, 350);
+        this.ctx.fillText("Avoid eating 🥦 🥒", 400, 400);
+
+        this.ctx.fillText("Press Enter to begin", 400, 500);
+
+        requestAnimationFrame(this.drawInstructions);
+    }
+
 
     restart(){
         this.running = false;
@@ -67,20 +118,13 @@ export default class Game {
 
         this.checkCollision();
 
-        //we see if they have scored a point by eating an item
-        // this.level.eatenItem(this.pug.bounds(), () => {
-        //     this.score += 1;
-        //     console.log(this.score);
-        // });
 
-        //and draw the score
         this.drawScore();
         this.drawLives();
 
         if (this.lives <= 0) {
             this.drawLives();
             this.drawGameOver();
-            // this.restart();
         }
         
         if (this.running) {
@@ -89,6 +133,7 @@ export default class Game {
     }
 
     play(){
+        this.startBackground();
         this.running = true;
         this.animate();
     }
@@ -123,9 +168,13 @@ export default class Game {
         return (
             this.level.collidesWith(this.pug.bounds(), (eatable) => {
                 if (eatable) {
+                    this.likeSound = new sound("./src/assets/chew.mp3");
+                    this.likeSound.play();
                     this.score += 1;
                     console.log(this.score);
                 } else {
+                    this.dislikeSound = new sound("./src/assets/dislike.mp3");
+                    this.dislikeSound.play();
                     this.lives -= 1;
                     console.log(this.lives);
                 }
@@ -134,6 +183,7 @@ export default class Game {
     }
 
     drawScore() { 
+        if (!this.running) return;
         const loc = { x: this.dimensions.width / 20, y: this.dimensions.height / 10 }
         this.ctx.font = "bold 50pt Permanent Marker";
         this.ctx.fillStyle = "white";
