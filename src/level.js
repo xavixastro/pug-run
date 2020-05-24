@@ -1,5 +1,5 @@
 const CONSTANTS = {
-    ITEM_SPEED: 3,
+    ITEM_SPEED: 4,
     EDGE_BUFFER: 50,
     ITEM_SPACING: 150,
     WARM_UP_SECONDS: 1
@@ -29,6 +29,11 @@ export default class Level {
             this.randomItem(firstItemDistance + (CONSTANTS.ITEM_SPACING * 3.5)),
             this.randomItem(firstItemDistance + (CONSTANTS.ITEM_SPACING * 4)),
             this.randomItem(firstItemDistance + (CONSTANTS.ITEM_SPACING * 4.5)),
+            this.randomItem(firstItemDistance + (CONSTANTS.ITEM_SPACING * 5)),
+            this.randomItem(firstItemDistance + (CONSTANTS.ITEM_SPACING * 5.5)),
+            this.randomItem(firstItemDistance + (CONSTANTS.ITEM_SPACING * 6)),
+            this.randomItem(firstItemDistance + (CONSTANTS.ITEM_SPACING * 6.5)),
+            this.randomItem(firstItemDistance + (CONSTANTS.ITEM_SPACING * 7)),
         ];
     }
 
@@ -70,7 +75,7 @@ export default class Level {
             this.items.shift();
         }          
 
-        if (this.items.length <= 10){
+        if (this.items.length <= 15){
             const newX = this.dimensions.width;
             this.items.push(this.randomItem(newX));
         }

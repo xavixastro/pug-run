@@ -29,7 +29,7 @@ export default class Game {
 
         //scrolling background
         this.img = document.getElementById("background-img");
-        this.vel = 180; //100pixels per second
+        this.vel = 240; //100pixels per second
         this.distance = 0;
         this.lastFrameRepaintTime = 0;
         this.calcOffset = this.calcOffset.bind(this);

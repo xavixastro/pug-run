@@ -49,7 +49,7 @@ export default class Pug {
         } else if (this.up === true) {
 
             //keep pug inbounds
-            if (this.y > -25) {this.y -= 3;}
+            if (this.y > -25) {this.y -= 4;}
 
             imagen.src = './src/assets/sprite-up.png';
 
@@ -68,7 +68,7 @@ export default class Pug {
 
         } else if (this.down === true) {
 
-            if (this.y < this.dimensions.height - 100) { this.y += 3}           
+            if (this.y < this.dimensions.height - 100) { this.y += 4}           
 
             imagen.src = './src/assets/sprite-down.png';
 
