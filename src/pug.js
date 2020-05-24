@@ -68,7 +68,7 @@ export default class Pug {
 
         } else if (this.down === true) {
 
-            this.y += 3;
+            if (this.y < this.dimensions.height - 100) { this.y += 3}           
 
             imagen.src = './src/assets/sprite-down.png';
 

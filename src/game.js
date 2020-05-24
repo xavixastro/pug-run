@@ -34,10 +34,8 @@ export default class Game {
         this.lastFrameRepaintTime = 0;
         this.calcOffset = this.calcOffset.bind(this);
         this.draw = this.draw.bind(this);
-        // this.startBackground();
 
         //instructions
-        this.img2 = document.getElementById("instructions-img");
         this.drawInstructions = this.drawInstructions.bind(this);
         this.drawInstructions();
 
@@ -70,7 +68,7 @@ export default class Game {
 
     startBackground(){
         this.lastFrameRepaintTime = window.performance.now();
-        requestAnimationFrame(this.draw);
+        this.backgroundId = requestAnimationFrame(this.draw);
     }
 
     drawInstructions(){
@@ -94,10 +92,10 @@ export default class Game {
         this.ctx.fillStyle = "white";
 
         this.ctx.fillText("Use ⬆⬇ to move your pug", 400, 300);
-        this.ctx.fillText("Eat 🍩 🍎 🦴 to gain points", 400, 350);
+        this.ctx.fillText("Eat 🍩 🍎 🦴 to make points", 400, 350);
         this.ctx.fillText("Avoid eating 🥦 🥒", 400, 400);
 
-        this.ctx.fillText("Press Enter to begin", 400, 500);
+        this.ctx.fillText("Press Enter to start", 400, 500);
 
         requestAnimationFrame(this.drawInstructions);
     }
@@ -138,21 +136,27 @@ export default class Game {
         this.animate();
     }
 
+    stop(){
+        this.restart();
+        this.drawInstructions();
+    }
+
 
     registerEvents() {
         addEventListener('keydown', function (e) {
             if (e.keyCode === 38) {
-                // if (this.pug.y <= 0) return
                 this.pug.moveUp();
             }
             if (e.keyCode === 40) {
-                if (this.pug.y >= this.dimensions.height - 30) return
                 this.pug.moveDown();
             }
-            if (e.keyCode === 32) {
+            if (e.keyCode === 13) {
                 if (!this.running) {
                     this.play();
                 }
+            }
+            if (e.keyCode === 81) {
+                this.stop();
             }
 
         }.bind(this))
@@ -224,17 +228,19 @@ export default class Game {
         this.ctx.strokeStyle = "black";
         this.ctx.lineWidth = 2;
         this.ctx.strokeText("GAME OVER", loc.x, loc.y);
+
+        this.ctx.font = "bold 30pt Permanent Marker";
+        this.ctx.fillStyle = "white";
+        this.ctx.fillText("Press q to continue", loc.x, loc.y+200);
+        this.ctx.strokeStyle = "black";
+        this.ctx.lineWidth = 2;
+        this.ctx.strokeText("Press q to continue", loc.x, loc.y+200);
+
+
+        this.level.items = undefined;
     }
 
-    // draw(){
-    //     this.ctx.fillStyle = "peru";
-    //     this.ctx.fillRect(0, 0, 800, 800);
-    //     let image = new Image();
-    //     image.src = '../src/assets/pug.gif';
-    //     image.onload = function () {
-    //         this.ctx.drawImage(image, 10, 10);
-    //     }.bind(this);
-    // }
+
 }
 
 

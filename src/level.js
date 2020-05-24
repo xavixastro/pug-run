@@ -60,6 +60,7 @@ export default class Level {
     }
 
     moveItems() {
+
         this.eachItem(function (item) {
             item.left -= CONSTANTS.ITEM_SPEED;
             item.right -= CONSTANTS.ITEM_SPEED;
@@ -77,6 +78,7 @@ export default class Level {
     }
 
     drawItems(ctx) {
+
         this.eachItem(function (item, idx) {
 
             let imagen = new Image();
@@ -97,10 +99,14 @@ export default class Level {
     }
 
     eachItem(callback) {
+        if (this.items === undefined) return;
+
         this.items.forEach(callback.bind(this));
     }
 
     animate(ctx) {
+        if (this.items === undefined) return;
+
         // this.drawBackground(ctx);
         this.moveItems();
         this.drawItems(ctx);
