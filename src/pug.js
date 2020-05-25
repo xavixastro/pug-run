@@ -1,10 +1,3 @@
-const CONSTANTS = {
-    PUG_WIDTH: 142,
-    PUG_HEIGHT: 88
-};
-
-
-
 export default class Pug {
 
     constructor(dimensions) {
@@ -25,8 +18,6 @@ export default class Pug {
 
     drawPug(ctx){
         let imagen = new Image();
-        
-        // imagen.src = '../src/assets/running-pug.gif';
 
         if (this.up === false && this.down === false) {
 
@@ -68,6 +59,7 @@ export default class Pug {
 
         } else if (this.down === true) {
 
+            //keep pug inbounds
             if (this.y < this.dimensions.height - 100) { this.y += 4}           
 
             imagen.src = './src/assets/sprite-down.png';
@@ -87,24 +79,15 @@ export default class Pug {
 
         } 
 
-
-        // imagen.onload = function () {
-            // ctx.drawImage(imagen, this.x, this.y);
-        // }.bind(this)
-
-        // ctx.fillStyle = "yellow";
-        // ctx.fillRect(this.x, this.y, 40, 30);
     }
 
 
     moveUp(){
         this.up = true;
-        // this.y -= 15;
     }
 
     moveDown(){
         this.down = true;
-        // this.y += 15;
     }
 
     moveStraight(){
@@ -115,38 +98,13 @@ export default class Pug {
 
     bounds() {
         return {
-            left: this.x + 45,
-            right: this.x + 45 + 60,
-            top: this.y + 40,
-            bottom: this.y + 40 + 50
+            //define bounds for items collision
+            left: this.x + 60,
+            right: this.x + 60 + 50,
+            top: this.y + 45,
+            bottom: this.y + 45 + 45
         };
     }
 
-    // outOfBounds() {
-    //     const aboveTheTop = this.y < 0;
-    //     const belowTheBottom = this.y + CONSTANTS.PUG_HEIGHT > this.dimensions.height;
-    //     return aboveTheTop || belowTheBottom;
-    // }
-
-
 
  }
-
-
-
-
-// function Pug() {
-//     this.width = 64
-//     this.height = 64
-
-// }
-
-// Pug.prototype.draw = function(ctx) {
-//     let imagen = new Image()
-//     imagen.src = '../src/assets/pug.png'
-//     imagen.onload = function () {
-//         ctx.drawImage(imagen, 0, 0);
-//     }
-// };
-
-// export default Pug;

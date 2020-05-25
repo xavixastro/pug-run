@@ -1,85 +1,40 @@
-import Board from './board';
 import Pug from './pug';
 import Level from "./level";
 
-function sound(src) {
-    this.sound = document.createElement("audio");
-    this.sound.src = src;
-    this.sound.setAttribute("preload", "auto");
-    this.sound.setAttribute("controls", "none");
-    this.sound.style.display = "none";
-    document.body.appendChild(this.sound);
-    this.play = function () {
-        this.sound.play();
-    }
-    this.stop = function () {
-        this.sound.pause();
-    }
-}
-
 
 export default class Game {
-    constructor(canvas, canvas2) {
+    constructor(canvas) {
         this.ctx = canvas.getContext("2d");
-        this.ctx2 = canvas.getContext("2d");
+        this.background = canvas.getContext("2d");
         this.dimensions = { width: canvas.width, height: canvas.height };
         this.registerEvents();
         this.restart();
-
-
-        //scrolling background
-        this.img = document.getElementById("background-img");
-        this.vel = 240; //100pixels per second
-        this.distance = 0;
-        this.lastFrameRepaintTime = 0;
-        this.calcOffset = this.calcOffset.bind(this);
-        this.draw = this.draw.bind(this);
 
         //instructions
         this.drawInstructions = this.drawInstructions.bind(this);
         this.drawInstructions();
 
+        //scrolling background
+        this.img = document.getElementById("background-img");
+        this.vel = 241; //pixels per second
+        this.distance = 0;
+        this.lastFrameRepaintTime = 0;
+        this.calculateDistance = this.calculateDistance.bind(this);
+        this.drawBackground = this.drawBackground.bind(this);
 
     }
 
-    calcOffset(time) {
-        let frameGapTime = time - this.lastFrameRepaintTime;
-        this.lastFrameRepaintTime = time;
-        let translateX = this.vel*(frameGapTime/1000);
-        return translateX;
-    }
 
-    draw(time){
-        this.distance -= this.calcOffset(time);
-        if (this.distance < -this.img.width) {
-            this.distance = 0;
-        }
-        this.ctx2.clearRect(0, 0, this.ctx2.width, this.ctx2.height);
-        this.ctx2.save();
-        this.ctx2.translate(this.distance, 0);
-        this.ctx2.drawImage(this.img, 0, 0);
-        this.ctx2.drawImage(this.img, this.img.width, 0);
-        
-
-        requestAnimationFrame(this.draw);
-
-        this.ctx2.restore();
-    }
-
-    startBackground(){
-        this.lastFrameRepaintTime = window.performance.now();
-        this.backgroundId = requestAnimationFrame(this.draw);
-    }
 
     drawInstructions(){
 
         let ground = new Image();
         ground.src = './src/assets/ground.jpg';
-        this.ctx2.drawImage(ground, 0, 0);
+        this.background.drawImage(ground, 0, 0);
 
         let pug = new Image();
         pug.src = './src/assets/pug.png';
-        this.ctx2.drawImage(pug, 100, 300);
+        this.background.drawImage(pug, 100, 300);
 
         this.ctx.font = "bold 100pt Permanent Marker";
         this.ctx.fillStyle = "#EBC489";
@@ -88,14 +43,41 @@ export default class Game {
         this.ctx.lineWidth = 2;
         this.ctx.strokeText("PUG RUN", 100, 200);
 
-        this.ctx.font = "15pt Rock Salt";
+        let apple = new Image();
+        apple.src = './src/assets/apple.png';
+        let donut = new Image();
+        donut.src = './src/assets/donut.png';
+        let bone = new Image();
+        bone.src = './src/assets/bone.png';
+        let garlic = new Image();
+        garlic.src = './src/assets/garlic.png';
+        let broccoli = new Image();
+        broccoli.src = './src/assets/broccoli.png';
+        let lemon = new Image();
+        lemon.src = './src/assets/lemon.png';
+
+
+        this.ctx.font = "bold 16pt Rock Salt";
         this.ctx.fillStyle = "white";
 
         this.ctx.fillText("Use ⬆⬇ to move your pug", 400, 300);
-        this.ctx.fillText("Eat 🍩 🍎 🦴 to make points", 400, 350);
-        this.ctx.fillText("Avoid eating 🥦 🥒", 400, 400);
+        this.ctx.fillText("Eat your favorite foods", 400, 350);
+        this.ctx.fillText ("to make points:", 400, 400);
 
-        this.ctx.fillText("Press Enter to start", 400, 500);
+
+        this.ctx.drawImage(apple, 400, 425, 40, 40)
+        this.ctx.drawImage(bone, 450, 425, 40, 40)
+        this.ctx.drawImage(donut, 500, 425, 40, 40)
+
+        this.ctx.fillText("Avoid eating:", 400, 500);
+        this.ctx.drawImage(garlic, 400, 525, 40, 40)
+        this.ctx.drawImage(broccoli, 450, 525, 40, 40)
+        this.ctx.drawImage(lemon, 500, 525, 40, 40)
+
+
+        this.ctx.font = "bold 20pt Rock Salt";
+        this.ctx.fillStyle = "white";
+        this.ctx.fillText("Press Enter to start", 350, 700);
 
         requestAnimationFrame(this.drawInstructions);
     }
@@ -175,12 +157,10 @@ export default class Game {
                     this.likeSound = new sound("./src/assets/chew.mp3");
                     this.likeSound.play();
                     this.score += 1;
-                    console.log(this.score);
                 } else {
                     this.dislikeSound = new sound("./src/assets/dislike.mp3");
                     this.dislikeSound.play();
                     this.lives -= 1;
-                    console.log(this.lives);
                 }
             }) 
         );
@@ -241,7 +221,54 @@ export default class Game {
     }
 
 
+    //Scrolling background
+
+    calculateDistance(time) {
+        let frameGapTime = time - this.lastFrameRepaintTime;
+        this.lastFrameRepaintTime = time;
+        let translateX = this.vel * (frameGapTime / 1000);
+        return translateX;
+    }
+
+    drawBackground(time) {
+        this.distance -= this.calculateDistance(time);
+        if (this.distance < -this.img.width) {
+            this.distance = 0;
+        }
+        this.background.clearRect(0, 0, this.background.width, this.background.height);
+        this.background.save();
+        this.background.translate(this.distance, 0);
+        this.background.drawImage(this.img, 0, 0);
+        this.background.drawImage(this.img, this.img.width, 0);
+
+
+        requestAnimationFrame(this.drawBackground);
+
+        this.background.restore();
+    }
+
+    startBackground() {
+        this.lastFrameRepaintTime = window.performance.now();
+        requestAnimationFrame(this.drawBackground);
+    }
+
+
 }
 
+//Sound constructor
+function sound(src) {
+    this.sound = document.createElement("audio");
+    this.sound.src = src;
+    this.sound.setAttribute("preload", "auto");
+    this.sound.setAttribute("controls", "none");
+    this.sound.style.display = "none";
+    document.body.appendChild(this.sound);
+    this.play = function () {
+        this.sound.play();
+    }
+    this.stop = function () {
+        this.sound.pause();
+    }
+}
 
 

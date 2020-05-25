@@ -2,11 +2,10 @@ const CONSTANTS = {
     ITEM_SPEED: 4,
     EDGE_BUFFER: 50,
     ITEM_SPACING: 150,
-    WARM_UP_SECONDS: 1
 };
 
 const GOOD_ITEMS = ['./src/assets/apple.png', './src/assets/donut.png', './src/assets/bone.png' ]
-const BAD_ITEMS = ['./src/assets/broccoli.png', './src/assets/garlic.png']
+const BAD_ITEMS = ['./src/assets/broccoli.png', './src/assets/garlic.png', './src/assets/lemon.png']
 
 
 
@@ -16,7 +15,7 @@ export default class Level {
 
         const firstItemDistance =
             this.dimensions.width +
-            (CONSTANTS.WARM_UP_SECONDS * 120 * CONSTANTS.ITEM_SPEED);
+            (120 * CONSTANTS.ITEM_SPEED);
 
         this.items = [
             this.randomItem(firstItemDistance),
@@ -75,7 +74,7 @@ export default class Level {
             this.items.shift();
         }          
 
-        if (this.items.length <= 15){
+        if (this.items.length < 15){
             const newX = this.dimensions.width;
             this.items.push(this.randomItem(newX));
         }
@@ -88,17 +87,7 @@ export default class Level {
 
             let imagen = new Image();
             imagen.src = item.img;
-            ctx.drawImage(imagen, 0, 0, 512, 512, item.left, item.top, item.right-item.left, item.bottom-item.top);
-
-            // ctx.fillStyle = "green";
-
-            // //draw top item
-            // ctx.fillRect(
-            //     item.left,
-            //     item.top,
-            //     item.right - item.left,
-            //     item.bottom - item.top
-            // );
+            ctx.drawImage(imagen, 0, 0, 520, 520, item.left, item.top, item.right-item.left, item.bottom-item.top);
 
         });
     }
@@ -112,7 +101,6 @@ export default class Level {
     animate(ctx) {
         if (this.items === undefined) return;
 
-        // this.drawBackground(ctx);
         this.moveItems();
         this.drawItems(ctx);
     }
@@ -138,7 +126,7 @@ export default class Level {
         let collision = false;
         this.eachItem((item, idx, arr) => {
             if (
-                //check if the pug is overlapping (colliding) with either item
+                //check if the pug is overlapping with item
                 _overlap(item, pug) 
             ) { 
                 arr.splice(idx, 1)
