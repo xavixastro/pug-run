@@ -21,10 +21,9 @@ You can access the live demo here: [Pug Run Live](https://xavixastro.github.io/p
 
 In order to generate a random item, I implemented the following function that will 
 take an X position and randomly generate a Y position based on the canvas dimensions.
-The function will create an item object and by using Math.random I make sure 
-to properly generate both eatable and uneatable items.  
+By using *Math.random*, I make sure to properly generate both eatable and uneatable items.  
 I assign a random image to each item depending on their eatable property, which will 
-later be used by the collidesWith function to either add points or deduct lives.
+later be used by the *collidesWith* function to either add points or deduct lives.
 
 ```javascript
     randomItem(x) {
