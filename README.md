@@ -18,6 +18,6 @@ You can access the live demo here: [Pug Run Live](https://xavixastro.github.io/p
 ## Features
 
 
-![Alt Text]()
+![Alt Text](https://github.com/xavixastro/pug-run/blob/master/src/assets/pug-run-capture.gif)
 
 
