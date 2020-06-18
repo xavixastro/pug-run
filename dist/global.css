@@ -22,6 +22,7 @@ html, body {height: 100%; overflow: hidden}
 .main {
     background-color: #EBC489;
     display: flex;
+    padding-bottom: 500px;
 }
 
 #game-canvas{

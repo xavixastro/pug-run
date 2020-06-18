@@ -4,11 +4,16 @@ import Level from "./level";
 
 export default class Game {
     constructor(canvas) {
+        
         this.ctx = canvas.getContext("2d");
         this.background = canvas.getContext("2d");
         this.dimensions = { width: canvas.width, height: canvas.height };
         this.registerEvents();
         this.restart();
+        
+        //instructions
+        this.drawInstructions = this.drawInstructions.bind(this);
+        this.drawInstructions();
         
         //scrolling background
         this.img = document.getElementById("background-img");
@@ -18,9 +23,7 @@ export default class Game {
         this.calculateDistance = this.calculateDistance.bind(this);
         this.drawBackground = this.drawBackground.bind(this);
         
-        //instructions
-        this.drawInstructions = this.drawInstructions.bind(this);
-        this.drawInstructions();
+
     }
 
 
