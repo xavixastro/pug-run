@@ -9,11 +9,7 @@ export default class Game {
         this.dimensions = { width: canvas.width, height: canvas.height };
         this.registerEvents();
         this.restart();
-
-        //instructions
-        this.drawInstructions = this.drawInstructions.bind(this);
-        this.drawInstructions();
-
+        
         //scrolling background
         this.img = document.getElementById("background-img");
         this.vel = 241; //pixels per second
@@ -21,7 +17,10 @@ export default class Game {
         this.lastFrameRepaintTime = 0;
         this.calculateDistance = this.calculateDistance.bind(this);
         this.drawBackground = this.drawBackground.bind(this);
-
+        
+        //instructions
+        this.drawInstructions = this.drawInstructions.bind(this);
+        this.drawInstructions();
     }
 
 

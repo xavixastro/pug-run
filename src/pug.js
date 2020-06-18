@@ -18,6 +18,12 @@ export default class Pug {
 
     drawPug(ctx){
         let imagen = new Image();
+        imagen.src = './src/assets/sprite-straight.png';
+        imagen.src = './src/assets/sprite-up.png';
+        imagen.src = './src/assets/sprite-down.png';
+
+
+
 
         if (this.up === false && this.down === false) {
 
