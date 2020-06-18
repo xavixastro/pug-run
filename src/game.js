@@ -8,8 +8,6 @@ export default class Game {
         this.ctx = canvas.getContext("2d");
         this.background = canvas.getContext("2d");
         this.dimensions = { width: canvas.width, height: canvas.height };
-        this.registerEvents();
-        this.restart();
         
         //instructions
         this.drawInstructions = this.drawInstructions.bind(this);
@@ -22,6 +20,9 @@ export default class Game {
         this.lastFrameRepaintTime = 0;
         this.calculateDistance = this.calculateDistance.bind(this);
         this.drawBackground = this.drawBackground.bind(this);
+
+        this.registerEvents();
+        this.restart();
         
 
     }
@@ -81,7 +82,7 @@ export default class Game {
         this.ctx.fillStyle = "white";
         this.ctx.fillText("Press Enter to start", 350, 700);
 
-        requestAnimationFrame(this.drawInstructions);
+        // requestAnimationFrame(this.drawInstructions);
     }
 
 
